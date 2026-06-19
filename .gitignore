@@ -8,3 +8,4 @@ __pycache__/
 app_local.py
 quiniela_local.json
 make_local_data.py
+assets/espn.png
