@@ -1,4 +1,5 @@
 import json
+import os
 import subprocess
 from datetime import datetime
 from itertools import combinations
@@ -12,6 +13,7 @@ st.set_page_config(page_title="Quiniela 2026", page_icon="⚽", layout="wide")
 st.markdown("""
 <style>
 [data-testid="stSidebar"] { min-width: 200px; max-width: 200px; }
+[data-testid="stSelectbox"] { max-width: 280px; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -152,6 +154,16 @@ def pred_label(pred, abbrev_map):
         return "EMP"
     return abbrev_map.get(pred, pred[:3].upper())
 
+def tally_style(n):
+    if n is None:
+        return ""
+    frac = n / 14
+    if frac >= 0.65:
+        return "background-color: #d4edda; color: #155724"
+    if frac >= 0.35:
+        return "background-color: #fff3cd; color: #856404"
+    return "background-color: #f8d7da; color: #721c24"
+
 def match_row_display(m):
     return {
         "#":        m["match_number"],
@@ -197,14 +209,13 @@ with st.sidebar:
 
 # ── Tabs ──────────────────────────────────────────────────────────────────────
 
-tab_score, tab_preds, tab_evo, tab_analisis, tab_profile = st.tabs([
-    "🏆 Clasificación", "📋 Predicciones", "📈 Evolución", "🔍 Análisis", "👤 Perfiles",
+tab_score, tab_preds, tab_profile, tab_evo, tab_analisis = st.tabs([
+    "🏆 Clasificación", "📋 Predicciones", "👤 Perfiles", "📈 Evolución", "🔍 Análisis",
 ])
 
 # ── Tab 1: Clasificación ──────────────────────────────────────────────────────
 
 with tab_score:
-    st.header("Clasificación")
 
     # Read filter values from session state so the scoreboard renders first
     # and the filter widgets appear below. On first load defaults apply (all matches).
@@ -218,26 +229,28 @@ with tab_score:
     ]
     n_filter = len(filter_matches)
 
+    # ── Compute scores ────────────────────────────────────────────────────────
+    rows = []
+    for p in participants:
+        pts = sum(
+            1 for m in filter_matches
+            if m["predictions"].get(p) is not None
+            and m["predictions"][p] == get_winner(m)
+        )
+        rows.append({"name": p, "points": pts})
+
+    rows.sort(key=lambda r: -r["points"])
+    rank = 1
+    for i, r in enumerate(rows):
+        if i > 0 and r["points"] < rows[i - 1]["points"]:
+            rank = i + 1
+        r["rank"] = rank
+
     # ── Tables ────────────────────────────────────────────────────────────────
     col_board, col_recent = st.columns([1, 1.5])
 
     with col_board:
-        rows = []
-        for p in participants:
-            pts = sum(
-                1 for m in filter_matches
-                if m["predictions"].get(p) is not None
-                and m["predictions"][p] == get_winner(m)
-            )
-            rows.append({"name": p, "points": pts})
-
-        rows.sort(key=lambda r: -r["points"])
-        rank = 1
-        for i, r in enumerate(rows):
-            if i > 0 and r["points"] < rows[i - 1]["points"]:
-                rank = i + 1
-            r["rank"] = rank
-
+        st.subheader("Clasificación")
         df_score = pd.DataFrame([{
             "Pos.":         MEDALS.get(r["rank"], str(r["rank"])),
             "Participante": participant_col(r["name"]),
@@ -247,33 +260,46 @@ with tab_score:
 
         st.dataframe(df_score, hide_index=True, use_container_width=False,
                      height=35 * (len(rows) + 1) + 3)
-        st.caption(f"Puntos = predicciones correctas de {n_filter} partidos.")
+        st.caption(f"Puntos = predicciones correctas de {n_filter}/{len(matches)} partidos.")
 
     with col_recent:
         st.subheader("Últimos resultados")
         recent = sorted(filter_matches, key=lambda m: -m["match_number"])[:10]
         if recent:
-            df_recent = pd.DataFrame([match_row_display(m) for m in recent])
+            consensus_by_num = {g["#"]: g["n_correct"] for g in consensus}
+            recent_rows = []
+            tally_ints = []
+            for m in recent:
+                row = match_row_display(m)
+                n = consensus_by_num.get(m["match_number"])
+                row["Aciertos"] = f"{n}/14" if n is not None else ""
+                tally_ints.append(n)
+                recent_rows.append(row)
+            df_recent = pd.DataFrame(recent_rows)
+
+            def style_recent(df):
+                out = pd.DataFrame("", index=df.index, columns=df.columns)
+                for i in df.index:
+                    out.loc[i, "Aciertos"] = tally_style(tally_ints[i])
+                return out
+
             st.dataframe(
-                df_recent,
+                df_recent.style.apply(style_recent, axis=None),
                 hide_index=True,
                 use_container_width=False,
                 column_config={
-                    "#":        st.column_config.NumberColumn(width="small"),
-                    "Marcador": st.column_config.TextColumn(width="small"),
+                    "#":         st.column_config.NumberColumn(width="small"),
+                    "Marcador":  st.column_config.TextColumn(width="small"),
+                    "Aciertos":  st.column_config.TextColumn(width="small"),
                 },
                 height=35 * (len(recent) + 1) + 3,
             )
         else:
             st.info("No hay partidos en el rango seleccionado.")
 
-    # ── Filters (below tables) ────────────────────────────────────────────────
-    st.divider()
-    col_f, _ = st.columns([1.5, 2.5])
-    with col_f:
         match_nums_desc = list(reversed([m["match_number"] for m in completed]))
         st.selectbox(
-            "Hasta partido:",
+            "Clasificación hasta partido:",
             options=[0] + match_nums_desc,
             format_func=lambda n: "Todos" if n == 0
                 else f"#{n} — {format_date(next(m['date_utc'] for m in completed if m['match_number'] == n))}",
@@ -282,12 +308,38 @@ with tab_score:
         )
         unique_dates_desc = sorted(set(m["date_utc"][:10] for m in completed), reverse=True)
         st.selectbox(
-            "Hasta fecha:",
+            "Clasificación hasta fecha:",
             options=["Todas"] + unique_dates_desc,
             format_func=lambda d: "Todas" if d == "Todas" else format_date(d + "T00:00Z"),
             index=0,
             key="filter_date",
         )
+
+    # ── Podium ────────────────────────────────────────────────────────────────
+    if len(rows) >= 3 and n_filter > 0:
+        st.markdown("### 🏆 Líderes")
+        # Classic podium order: 2nd | 1st | 3rd
+        podium = [rows[1], rows[0], rows[2]]
+        sizes  = [3, 3, 3]
+        pod_cols = st.columns(3)
+        for col, r, rel in zip(pod_cols, podium, sizes):
+            with col:
+                medal  = MEDALS.get(r["rank"], f"#{r['rank']}")
+                name   = participant_col(r["name"])
+                pts    = r["points"]
+                st.markdown(
+                    f"<div style='text-align:center;padding:6px 0 4px'>"
+                    f"<span style='font-size:1.5em;font-weight:800'>{medal} {name}</span><br>"
+                    f"<span style='font-size:1.25em;font-weight:600'>{pts} pts</span>"
+                    f"</div>",
+                    unsafe_allow_html=True,
+                )
+                avatar = f"assets/{r['name']}.png"
+                if os.path.exists(avatar):
+                    _, ic, _ = st.columns([1, rel, 1])
+                    with ic:
+                        st.image(avatar, use_container_width=True)
+
 
 # ── Tab 2: Predicciones ───────────────────────────────────────────────────────
 
@@ -309,6 +361,7 @@ with tab_preds:
             "Visitante": team_display(m["away_team"]),
         }
         corr = {}
+        n_correct = 0
         for p in participants:
             pred = m["predictions"].get(p)
             col  = p_cols[p]
@@ -319,15 +372,19 @@ with tab_preds:
                 corr[col] = "missing"
             elif pred == winner:
                 corr[col] = "correct"
+                n_correct += 1
             else:
                 corr[col] = "wrong"
 
+        row["Aciertos"] = f"{n_correct}/14" if m["completed"] else ""
         rows.append(row)
         correctness.append(corr)
 
-    df_preds = pd.DataFrame(rows)
-    corr_df  = pd.DataFrame(correctness)
+    df_preds       = pd.DataFrame(rows)
+    corr_df        = pd.DataFrame(correctness)
     display_p_cols = list(p_cols.values())
+    _cons_lookup   = {g["#"]: g["n_correct"] for g in consensus}
+    tally_pred     = [_cons_lookup.get(m["match_number"]) for m in matches]
 
     def style_preds(df):
         styles = pd.DataFrame("", index=df.index, columns=df.columns)
@@ -335,6 +392,8 @@ with tab_preds:
             if col in df.columns:
                 for i in df.index:
                     styles.loc[i, col] = COLORS.get(corr_df.loc[i, col], "")
+        for i in df.index:
+            styles.loc[i, "Aciertos"] = tally_style(tally_pred[i])
         return styles
 
     styled = df_preds.style.apply(style_preds, axis=None)
@@ -467,8 +526,6 @@ with tab_analisis:
         sims[frozenset({p1, p2})] = (agree, total, pct)
 
     # ── Most similar pairs (global) ───────────────────────────────────────────
-    st.subheader("Pares más similares")
-
     all_pairs = sorted(
         [(p1, p2, *sims[frozenset({p1, p2})]) for p1, p2 in combinations(participants, 2)],
         key=lambda x: -x[4],
@@ -482,13 +539,31 @@ with tab_analisis:
             "Coincidencias":  f"{agree}/{total}",
         } for p1, p2, agree, total, pct in pairs_data])
 
+    def pair_card(title, p1, p2, agree, total, pct, table_data):
+        st.subheader(title)
+        c_l, c_r, c_m = st.columns([2, 2, 3])
+        with c_l:
+            av = f"assets/{p1}.png"
+            if os.path.exists(av):
+                st.image(av, width=113)
+            st.markdown(f"**{participant_col(p1)}**")
+        with c_r:
+            av = f"assets/{p2}.png"
+            if os.path.exists(av):
+                st.image(av, width=113)
+            st.markdown(f"**{participant_col(p2)}**")
+        with c_m:
+            st.metric("Similitud", f"{pct:.0%}", f"{agree} de {total} coinciden")
+        st.markdown(f"**{title}**")
+        st.dataframe(pairs_df(table_data), hide_index=True, use_container_width=True)
+
     col_top_p, col_bot_p = st.columns(2)
     with col_top_p:
-        st.markdown("**Top 3 pares más similares**")
-        st.dataframe(pairs_df(all_pairs[:3]), hide_index=True, use_container_width=True)
+        p1s, p2s, agree_s, total_s, pct_s = all_pairs[0]
+        pair_card("Los más similares", p1s, p2s, agree_s, total_s, pct_s, all_pairs[:3])
     with col_bot_p:
-        st.markdown("**Top 3 pares más diferentes**")
-        st.dataframe(pairs_df(list(reversed(all_pairs[-3:]))), hide_index=True, use_container_width=True)
+        p1d, p2d, agree_d, total_d, pct_d = all_pairs[-1]
+        pair_card("Los más diferentes", p1d, p2d, agree_d, total_d, pct_d, list(reversed(all_pairs[-3:])))
 
     st.divider()
 
@@ -499,7 +574,11 @@ with tab_analisis:
         "Selecciona un participante:",
         options=participants,
         format_func=participant_col,
+        index=participants.index("ame"),
     )
+    _av = f"assets/{sel_person}.png"
+    if os.path.exists(_av):
+        st.image(_av, width=113)
 
     others = sorted(
         [(p, *sims[frozenset({sel_person, p})]) for p in participants if p != sel_person],
@@ -515,16 +594,34 @@ with tab_analisis:
 
     col_sim1, col_sim2 = st.columns(2)
     with col_sim1:
+        best_p, best_agree, best_total, best_pct = others[0]
+        c_pic, c_met = st.columns([2, 3])
+        with c_pic:
+            av = f"assets/{best_p}.png"
+            if os.path.exists(av):
+                st.image(av, width=113)
+            st.markdown(f"**{participant_col(best_p)}**")
+        with c_met:
+            st.metric("Similitud", f"{best_pct:.0%}", f"{best_agree} de {best_total} coinciden")
         st.markdown("**Top 3 más similares**")
         st.dataframe(sim_table(others[:3]), hide_index=True, use_container_width=True)
     with col_sim2:
+        worst_p, worst_agree, worst_total, worst_pct = others[-1]
+        c_pic, c_met = st.columns([2, 3])
+        with c_pic:
+            av = f"assets/{worst_p}.png"
+            if os.path.exists(av):
+                st.image(av, width=113)
+            st.markdown(f"**{participant_col(worst_p)}**")
+        with c_met:
+            st.metric("Similitud", f"{worst_pct:.0%}", f"{worst_agree} de {worst_total} coinciden")
         st.markdown("**Top 3 más diferentes**")
         st.dataframe(sim_table(list(reversed(others[-3:]))), hide_index=True, use_container_width=True)
 
     st.divider()
 
     # ── Pair comparison ───────────────────────────────────────────────────────
-    st.subheader("Comparar dos participantes")
+    st.subheader("Similitud entre dos participantes")
 
     col_p1, col_p2 = st.columns(2)
     with col_p1:
@@ -534,6 +631,21 @@ with tab_analisis:
         pair2 = st.selectbox("Participante 2:",
                              [p for p in participants if p != pair1],
                              format_func=participant_col, key="pair2")
+
+    # VS banner
+    _av1, _av2 = f"assets/{pair1}.png", f"assets/{pair2}.png"
+    c_l, c_vs, c_r = st.columns([2, 1, 2])
+    with c_l:
+        if os.path.exists(_av1):
+            st.image(_av1, width=100)
+        st.caption(participant_col(pair1))
+    with c_vs:
+        st.markdown("<div style='text-align:center;font-size:1.6em;padding-top:28px'>vs</div>",
+                    unsafe_allow_html=True)
+    with c_r:
+        if os.path.exists(_av2):
+            st.image(_av2, width=100)
+        st.caption(participant_col(pair2))
 
     agree_n, total_n, pct_n = sims[frozenset({pair1, pair2})]
     st.metric(
@@ -619,7 +731,7 @@ with tab_analisis:
 
 with tab_profile:
     sel_p = st.selectbox("Participante:", participants, format_func=participant_col,
-                         key="profile_person")
+                         key="profile_person", index=participants.index("ame"))
 
     # ── Stats ─────────────────────────────────────────────────────────────────
     total_pts = sum(
@@ -644,7 +756,7 @@ with tab_profile:
 
     with col_pic:
         avatar = f"assets/{sel_p}.png"
-        if __import__("os").path.exists(avatar):
+        if os.path.exists(avatar):
             st.image(avatar, width=160)
 
     with col_stats:
@@ -653,6 +765,53 @@ with tab_profile:
         c1.metric("Puntos", total_pts)
         c2.metric("Posición", MEDALS.get(rank, f"#{rank}"))
         c3.metric("Aciertos", f"{accuracy:.0%}" if n_pred else "—")
+
+    st.divider()
+
+    # ── Rank evolution chart ──────────────────────────────────────────────────
+    if completed:
+        rank_rows = []
+        running_r = {p: 0 for p in participants}
+        last_m = 0
+        for m in completed:
+            winner = get_winner(m)
+            for p in participants:
+                if m["predictions"].get(p) is not None and m["predictions"][p] == winner:
+                    running_r[p] += 1
+            sel_pts = running_r[sel_p]
+            rank_now = sum(1 for p in participants if running_r[p] > sel_pts) + 1
+            rank_rows.append({"match": m["match_number"], "posición": rank_now})
+            last_m = m["match_number"]
+        # Phantom trailing point for horizontal line ending
+        rank_rows.append({"match": last_m + 0.5, "posición": rank_rows[-1]["posición"]})
+
+        df_rank = pd.DataFrame(rank_rows)
+        p_color = PALETTE[participants.index(sel_p)]
+
+        rank_chart = (
+            alt.Chart(df_rank)
+            .mark_line(interpolate="step-after", color=p_color, strokeWidth=2.5)
+            .encode(
+                x=alt.X("match:Q", title="Partido #",
+                         axis=alt.Axis(tickMinStep=1),
+                         scale=alt.Scale(domain=[1, last_m + 0.5])),
+                y=alt.Y("posición:Q", title="Posición",
+                         scale=alt.Scale(reverse=True, domain=[1, n_parts]),
+                         axis=alt.Axis(tickMinStep=1, values=list(range(1, n_parts + 1)))),
+                tooltip=[
+                    alt.Tooltip("match:Q",    title="Partido",  format="d"),
+                    alt.Tooltip("posición:Q", title="Posición"),
+                ],
+            )
+            .properties(height=250, title="Evolución de posición en el torneo")
+        )
+        st.altair_chart(rank_chart, use_container_width=True)
+
+        real_ranks = [r["posición"] for r in rank_rows if r["match"] % 1 == 0 and r["match"] > 0]
+        if real_ranks:
+            rb1, rb2 = st.columns(2)
+            rb1.metric("🏆 Mejor posición", MEDALS.get(min(real_ranks), f"#{min(real_ranks)}"))
+            rb2.metric("📉 Peor posición", f"#{max(real_ranks)}")
 
     st.divider()
 
