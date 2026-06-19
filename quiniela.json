@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-19T20:51:46.557415+00:00",
+  "generated_at": "2026-06-19T21:21:08.444414+00:00",
   "participants": [
     "ivan",
     "raquel",
@@ -865,8 +865,8 @@
       "away_team": "Australia",
       "home_score": 2,
       "away_score": 0,
-      "completed": false,
-      "result": null,
+      "completed": true,
+      "result": "home",
       "date_utc": "2026-06-19T19:00Z",
       "venue": "Lumen Field",
       "city": "Seattle, Washington",

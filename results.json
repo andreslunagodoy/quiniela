@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-19T20:51:46.481335+00:00",
+  "fetched_at": "2026-06-19T21:21:07.410634+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -488,9 +488,9 @@
       "away_abbreviation": "AUS",
       "home_score": 2,
       "away_score": 0,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "status": "post",
+      "completed": true,
+      "result": "home",
       "venue": "Lumen Field",
       "city": "Seattle, Washington"
     },
