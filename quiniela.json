@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-19T21:21:08.444414+00:00",
+  "generated_at": "2026-06-19T22:03:46.492759+00:00",
   "participants": [
     "ivan",
     "raquel",
@@ -894,7 +894,7 @@
       "home_team": "Scotland",
       "away_team": "Morocco",
       "home_score": 0,
-      "away_score": 0,
+      "away_score": 1,
       "completed": false,
       "result": null,
       "date_utc": "2026-06-19T22:00Z",
