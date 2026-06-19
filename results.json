@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-19T14:50:56.866714+00:00",
+  "fetched_at": "2026-06-19T20:51:46.481335+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -486,9 +486,9 @@
       "home_abbreviation": "USA",
       "away_team": "Australia",
       "away_abbreviation": "AUS",
-      "home_score": 0,
+      "home_score": 2,
       "away_score": 0,
-      "status": "pre",
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "Lumen Field",

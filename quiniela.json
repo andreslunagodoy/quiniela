@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-19T14:50:56.914302+00:00",
+  "generated_at": "2026-06-19T20:51:46.557415+00:00",
   "participants": [
     "ivan",
     "raquel",
@@ -863,7 +863,7 @@
       "group": "D",
       "home_team": "United States",
       "away_team": "Australia",
-      "home_score": 0,
+      "home_score": 2,
       "away_score": 0,
       "completed": false,
       "result": null,
