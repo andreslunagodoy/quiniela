@@ -396,8 +396,7 @@ with tab_score:
     # ── Podium ────────────────────────────────────────────────────────────────
     if len(rows) >= 3 and n_filter > 0:
         st.markdown("### 🏆 Líderes")
-        # Classic podium order: 2nd | 1st | 3rd
-        podium = [rows[1], rows[0], rows[2]]
+        podium = [rows[0], rows[1], rows[2]]
         sizes  = [3, 3, 3]
         pod_cols = st.columns(3)
         for col, r, rel in zip(pod_cols, podium, sizes):
