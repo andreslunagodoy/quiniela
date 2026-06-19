@@ -153,6 +153,38 @@ def _parse_espn_events(events):
         abbrevs[away_name] = away.get("team", {}).get("abbreviation", "")
     return index, abbrevs
 
+@st.cache_data(ttl=60)
+def _espn_live():
+    r = requests.get(ESPN_URL, timeout=10)
+    r.raise_for_status()
+    return r.json().get("events", [])
+
+def get_live_games():
+    try:
+        events = _espn_live()
+    except Exception:
+        return []
+    live = []
+    for event in events:
+        comp = event["competitions"][0]
+        status = comp["status"]["type"]
+        if status.get("state") != "in":
+            continue
+        competitors = {c["homeAway"]: c for c in comp.get("competitors", [])}
+        home = competitors.get("home", {})
+        away = competitors.get("away", {})
+        raw_hs = home.get("score", "")
+        raw_as = away.get("score", "")
+        live.append({
+            "home_team": home.get("team", {}).get("displayName"),
+            "away_team": away.get("team", {}).get("displayName"),
+            "home_score": int(raw_hs) if raw_hs not in (None, "") else 0,
+            "away_score": int(raw_as) if raw_as not in (None, "") else 0,
+            "clock":  status.get("detail", ""),
+            "period": status.get("description", ""),
+        })
+    return live
+
 @st.cache_data(ttl=300)
 def load_quiniela():
     with open("quiniela.json", encoding="utf-8") as f:
@@ -252,8 +284,8 @@ with st.sidebar:
 
 # ── Tabs ──────────────────────────────────────────────────────────────────────
 
-tab_score, tab_preds, tab_profile, tab_evo, tab_analisis = st.tabs([
-    "🏆 Clasificación", "📋 Predicciones", "👤 Perfiles", "📈 Evolución", "🔍 Análisis",
+tab_score, tab_live, tab_preds, tab_profile, tab_evo, tab_analisis = st.tabs([
+    "🏆 Clasificación", "🔴 En vivo", "📋 Predicciones", "👤 Perfiles", "📈 Evolución", "🔍 Análisis",
 ])
 
 # ── Tab 1: Clasificación ──────────────────────────────────────────────────────
@@ -384,7 +416,133 @@ with tab_score:
                         st.image(avatar, use_container_width=True)
 
 
-# ── Tab 2: Predicciones ───────────────────────────────────────────────────────
+# ── Tab 2: En vivo ────────────────────────────────────────────────────────────
+
+with tab_live:
+    live_games = get_live_games()
+
+    col_live_refresh, _ = st.columns([1, 4])
+    with col_live_refresh:
+        if st.button("🔄 Actualizar", key="live_refresh"):
+            _espn_live.clear()
+            st.rerun()
+
+    if not live_games:
+        st.info("No hay partidos en curso en este momento.")
+    else:
+        for live in live_games:
+            home = live["home_team"]
+            away = live["away_team"]
+            hs   = live["home_score"]
+            as_  = live["away_score"]
+
+            if hs > as_:   hyp_winner = home
+            elif as_ > hs: hyp_winner = away
+            else:          hyp_winner = "draw"
+
+            match_data = next(
+                (m for m in matches
+                 if frozenset({m["home_team"], m["away_team"]}) == frozenset({home, away})),
+                None,
+            )
+
+            st.markdown(f"""
+            <div style='text-align:center;padding:20px 0 16px;'>
+              <div style='font-size:0.95em;color:#888;margin-bottom:6px'>
+                {live["clock"]} &nbsp;·&nbsp; {live["period"]}
+              </div>
+              <div style='font-size:2.2em;font-weight:800;'>
+                {team_display(home)} &nbsp;&nbsp; {hs} – {as_} &nbsp;&nbsp; {team_display(away)}
+              </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            col_lp, col_lb = st.columns(2)
+
+            with col_lp:
+                st.subheader("Predicciones")
+                if match_data:
+                    pred_rows, correct_flags, has_pred = [], [], []
+                    for p in participants:
+                        pred = match_data["predictions"].get(p)
+                        if pred == home:    plabel = team_display(home)
+                        elif pred == away:  plabel = team_display(away)
+                        elif pred == "draw": plabel = "Empate"
+                        else:               plabel = "—"
+                        correct_flags.append(pred == hyp_winner if pred is not None else False)
+                        has_pred.append(pred is not None)
+                        pred_rows.append({"Participante": participant_col(p), "Predicción": plabel})
+
+                    df_lp = pd.DataFrame(pred_rows)
+
+                    def _style_lp(df):
+                        out = pd.DataFrame("", index=df.index, columns=df.columns)
+                        for i in df.index:
+                            if has_pred[i]:
+                                out.loc[i] = COLORS["correct"] if correct_flags[i] else COLORS["wrong"]
+                        return out
+
+                    st.dataframe(df_lp.style.apply(_style_lp, axis=None),
+                                 hide_index=True, use_container_width=False,
+                                 height=35*(len(participants)+1)+3)
+
+            with col_lb:
+                st.subheader("Tabla si así termina")
+
+                curr_pts = {p: sum(1 for m in completed
+                                   if m["predictions"].get(p) == get_winner(m))
+                            for p in participants}
+                curr_sorted = sorted(participants, key=lambda p: -curr_pts[p])
+                curr_rank = {}
+                _r = 1
+                for _i, _p in enumerate(curr_sorted):
+                    if _i > 0 and curr_pts[_p] < curr_pts[curr_sorted[_i-1]]:
+                        _r = _i + 1
+                    curr_rank[_p] = _r
+
+                hyp_rows = []
+                for p in participants:
+                    pts = curr_pts[p]
+                    if match_data and match_data["predictions"].get(p) == hyp_winner:
+                        pts += 1
+                    hyp_rows.append({"name": p, "points": pts})
+                hyp_rows.sort(key=lambda x: -x["points"])
+                _r = 1
+                for _i, _row in enumerate(hyp_rows):
+                    if _i > 0 and _row["points"] < hyp_rows[_i-1]["points"]:
+                        _r = _i + 1
+                    _row["rank"] = _r
+
+                delta_styles = []
+                df_hyp_rows = []
+                for _row in hyp_rows:
+                    d = curr_rank[_row["name"]] - _row["rank"]
+                    if d > 0:   ds, dc = f"↑{d}", "color:#155724;font-weight:600"
+                    elif d < 0: ds, dc = f"↓{abs(d)}", "color:#721c24;font-weight:600"
+                    else:       ds, dc = "—", ""
+                    delta_styles.append(dc)
+                    df_hyp_rows.append({
+                        "Pos.": MEDALS.get(_row["rank"], str(_row["rank"])),
+                        "Participante": participant_col(_row["name"]),
+                        "Pts.": _row["points"],
+                        "Δ": ds,
+                    })
+
+                df_hyp = pd.DataFrame(df_hyp_rows)
+
+                def _style_hyp(df):
+                    out = pd.DataFrame("", index=df.index, columns=df.columns)
+                    for i in df.index:
+                        out.loc[i, "Δ"] = delta_styles[i]
+                    return out
+
+                st.dataframe(df_hyp.style.apply(_style_hyp, axis=None),
+                             hide_index=True, use_container_width=False,
+                             height=35*(len(hyp_rows)+1)+3)
+
+            st.divider()
+
+# ── Tab 3: Predicciones ───────────────────────────────────────────────────────
 
 with tab_preds:
     st.header("Predicciones")
