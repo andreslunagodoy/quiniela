@@ -3,3 +3,8 @@ __pycache__/
 .DS_Store
 .env
 *.conda
+
+# Local-only analysis files (not deployed)
+app_local.py
+quiniela_local.json
+make_local_data.py
