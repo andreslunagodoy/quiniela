@@ -118,7 +118,7 @@ ESPN_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scor
 
 _ESPN_HEADERS = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/120 Safari/537.36"}
 
-@st.cache_data(ttl=300)
+@st.cache_data(ttl=60)
 def _espn_events():
     r = requests.get(ESPN_URL, params={"dates": "20260611-20260726", "limit": 200},
                      headers=_ESPN_HEADERS, timeout=10)
@@ -188,7 +188,6 @@ def get_live_games():
         })
     return live
 
-@st.cache_data(ttl=300)
 def load_quiniela():
     with open("quiniela.json", encoding="utf-8") as f:
         data = json.load(f)
@@ -204,7 +203,6 @@ def load_quiniela():
     data["_espn_error"] = espn_error
     return data
 
-@st.cache_data(ttl=300)
 def load_abbrevs():
     try:
         _, abbrevs = _parse_espn_events(_espn_events())
