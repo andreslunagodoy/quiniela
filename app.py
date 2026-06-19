@@ -1,11 +1,11 @@
 import json
 import os
-import subprocess
 from datetime import datetime
 from itertools import combinations
 
 import altair as alt
 import pandas as pd
+import requests
 import streamlit as st
 
 st.set_page_config(page_title="Quiniela 2026", page_icon="⚽", layout="wide")
@@ -114,26 +114,74 @@ def format_date(date_utc):
 
 # ── Data loading ──────────────────────────────────────────────────────────────
 
+ESPN_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard"
+
+@st.cache_data(ttl=300)
+def _espn_events():
+    r = requests.get(ESPN_URL, params={"dates": "20260611-20260726", "limit": 200}, timeout=10)
+    r.raise_for_status()
+    return r.json().get("events", [])
+
+def _parse_espn_events(events):
+    index, abbrevs = {}, {}
+    for event in events:
+        comp = event["competitions"][0]
+        status = comp["status"]["type"]
+        competitors = {c["homeAway"]: c for c in comp.get("competitors", [])}
+        home = competitors.get("home", {})
+        away = competitors.get("away", {})
+        home_name = home.get("team", {}).get("displayName")
+        away_name = away.get("team", {}).get("displayName")
+        if not home_name or not away_name:
+            continue
+        home_score = int(home["score"]) if home.get("score") not in (None, "") else None
+        away_score = int(away["score"]) if away.get("score") not in (None, "") else None
+        completed = status.get("completed", False)
+        if completed and home_score is not None and away_score is not None:
+            result = "home" if home_score > away_score else ("away" if away_score > home_score else "draw")
+        else:
+            result = None
+        key = frozenset({home_name, away_name})
+        index[key] = {
+            "home_score": home_score, "away_score": away_score,
+            "completed": completed, "result": result,
+            "date_utc": event["date"],
+            "venue": comp.get("venue", {}).get("fullName"),
+            "city": comp.get("venue", {}).get("address", {}).get("city"),
+        }
+        abbrevs[home_name] = home.get("team", {}).get("abbreviation", "")
+        abbrevs[away_name] = away.get("team", {}).get("abbreviation", "")
+    return index, abbrevs
+
 @st.cache_data(ttl=300)
 def load_quiniela():
     with open("quiniela.json", encoding="utf-8") as f:
-        return json.load(f)
+        data = json.load(f)
+    try:
+        espn_index, _ = _parse_espn_events(_espn_events())
+        for m in data["matches"]:
+            live = espn_index.get(frozenset({m["home_team"], m["away_team"]}))
+            if live:
+                m.update({k: v for k, v in live.items() if v is not None})
+    except Exception:
+        pass
+    return data
 
 @st.cache_data(ttl=300)
 def load_abbrevs():
-    with open("results.json", encoding="utf-8") as f:
-        results = json.load(f)
-    abbrev = {}
-    for m in results["matches"]:
-        abbrev[m["home_team"]] = m["home_abbreviation"]
-        abbrev[m["away_team"]] = m["away_abbreviation"]
-    return abbrev
-
-def refresh_results():
-    subprocess.run(["python3", "scrape_results.py"], check=True)
-    subprocess.run(["python3", "parse_predictions.py"], check=True)
-    load_quiniela.clear()
-    load_abbrevs.clear()
+    try:
+        _, abbrevs = _parse_espn_events(_espn_events())
+        if abbrevs:
+            return abbrevs
+    except Exception:
+        pass
+    try:
+        with open("results.json", encoding="utf-8") as f:
+            results = json.load(f)
+        return {m["home_team"]: m["home_abbreviation"] for m in results["matches"]} | \
+               {m["away_team"]: m["away_abbreviation"] for m in results["matches"]}
+    except Exception:
+        return {}
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -199,12 +247,7 @@ for _m in completed:
 
 with st.sidebar:
     st.title("⚽ Quiniela Luna Campos 2026")
-    st.caption(f"Actualizado: {data['generated_at'][:16].replace('T', ' ')} UTC")
     st.caption(f"{n_played}/{len(matches)} partidos jugados")
-    if st.button("🔄 Actualizar resultados", use_container_width=True, disabled=True):
-        with st.spinner("Obteniendo resultados..."):
-            refresh_results()
-        st.rerun()
     st.caption("Hecho con ❤️ para la familia")
 
 # ── Tabs ──────────────────────────────────────────────────────────────────────
