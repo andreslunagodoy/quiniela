@@ -283,10 +283,6 @@ for _m in completed:
 with st.sidebar:
     st.title("⚽ Quiniela Luna Campos 2026")
     st.caption(f"{n_played}/{len(matches)} partidos jugados")
-    if data.get("_espn_error"):
-        st.caption(f"⚠️ ESPN: {data['_espn_error']}")
-    else:
-        st.caption("🟢 Datos en vivo")
     st.caption("Hecho con ❤️ para la familia")
 
 # ── Tabs ──────────────────────────────────────────────────────────────────────
