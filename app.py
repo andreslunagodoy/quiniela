@@ -116,9 +116,12 @@ def format_date(date_utc):
 
 ESPN_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard"
 
+_ESPN_HEADERS = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/120 Safari/537.36"}
+
 @st.cache_data(ttl=300)
 def _espn_events():
-    r = requests.get(ESPN_URL, params={"dates": "20260611-20260726", "limit": 200}, timeout=10)
+    r = requests.get(ESPN_URL, params={"dates": "20260611-20260726", "limit": 200},
+                     headers=_ESPN_HEADERS, timeout=10)
     r.raise_for_status()
     return r.json().get("events", [])
 
@@ -155,7 +158,7 @@ def _parse_espn_events(events):
 
 @st.cache_data(ttl=60)
 def _espn_live():
-    r = requests.get(ESPN_URL, timeout=10)
+    r = requests.get(ESPN_URL, headers=_ESPN_HEADERS, timeout=10)
     r.raise_for_status()
     return r.json().get("events", [])
 
@@ -189,14 +192,16 @@ def get_live_games():
 def load_quiniela():
     with open("quiniela.json", encoding="utf-8") as f:
         data = json.load(f)
+    espn_error = None
     try:
         espn_index, _ = _parse_espn_events(_espn_events())
         for m in data["matches"]:
             live = espn_index.get(frozenset({m["home_team"], m["away_team"]}))
             if live:
                 m.update({k: v for k, v in live.items() if v is not None})
-    except Exception:
-        pass
+    except Exception as e:
+        espn_error = str(e)
+    data["_espn_error"] = espn_error
     return data
 
 @st.cache_data(ttl=300)
@@ -280,6 +285,10 @@ for _m in completed:
 with st.sidebar:
     st.title("⚽ Quiniela Luna Campos 2026")
     st.caption(f"{n_played}/{len(matches)} partidos jugados")
+    if data.get("_espn_error"):
+        st.caption(f"⚠️ ESPN: {data['_espn_error']}")
+    else:
+        st.caption("🟢 Datos en vivo")
     st.caption("Hecho con ❤️ para la familia")
 
 # ── Tabs ──────────────────────────────────────────────────────────────────────
