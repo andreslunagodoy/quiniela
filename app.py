@@ -201,7 +201,7 @@ with st.sidebar:
     st.title("⚽ Quiniela Luna Campos 2026")
     st.caption(f"Actualizado: {data['generated_at'][:16].replace('T', ' ')} UTC")
     st.caption(f"{n_played}/{len(matches)} partidos jugados")
-    if st.button("🔄 Actualizar resultados", use_container_width=True):
+    if st.button("🔄 Actualizar resultados", use_container_width=True, disabled=True):
         with st.spinner("Obteniendo resultados..."):
             refresh_results()
         st.rerun()
