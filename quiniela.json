@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-20T03:38:00.943344+00:00",
+  "generated_at": "2026-06-20T07:50:24.834829+00:00",
   "participants": [
     "ivan",
     "raquel",
@@ -955,8 +955,8 @@
       "away_team": "Paraguay",
       "home_score": 0,
       "away_score": 1,
-      "completed": false,
-      "result": null,
+      "completed": true,
+      "result": "away",
       "date_utc": "2026-06-20T03:00Z",
       "venue": "Levi's Stadium",
       "city": "Santa Clara, California",

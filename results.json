@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-20T03:38:00.866293+00:00",
+  "fetched_at": "2026-06-20T07:50:24.773781+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -539,9 +539,9 @@
       "away_abbreviation": "PAR",
       "home_score": 0,
       "away_score": 1,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "status": "post",
+      "completed": true,
+      "result": "away",
       "venue": "Levi's Stadium",
       "city": "Santa Clara, California"
     },
