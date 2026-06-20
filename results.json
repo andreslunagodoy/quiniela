@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-20T16:17:48.684858+00:00",
+  "fetched_at": "2026-06-20T17:54:37.613420+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -554,9 +554,9 @@
       "home_abbreviation": "NED",
       "away_team": "Sweden",
       "away_abbreviation": "SWE",
-      "home_score": 0,
+      "home_score": 2,
       "away_score": 0,
-      "status": "pre",
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "NRG Stadium",
