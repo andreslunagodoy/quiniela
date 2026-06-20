@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-20T17:54:37.613420+00:00",
+  "fetched_at": "2026-06-20T19:25:42.036987+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -554,11 +554,11 @@
       "home_abbreviation": "NED",
       "away_team": "Sweden",
       "away_abbreviation": "SWE",
-      "home_score": 2,
-      "away_score": 0,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "home_score": 5,
+      "away_score": 1,
+      "status": "post",
+      "completed": true,
+      "result": "home",
       "venue": "NRG Stadium",
       "city": "Houston, Texas"
     },
