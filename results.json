@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-20T19:25:42.036987+00:00",
+  "fetched_at": "2026-06-20T20:50:39.118074+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -572,8 +572,8 @@
       "away_team": "Ivory Coast",
       "away_abbreviation": "CIV",
       "home_score": 0,
-      "away_score": 0,
-      "status": "pre",
+      "away_score": 1,
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "BMO Field",
