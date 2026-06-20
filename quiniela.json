@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-20T20:50:39.181443+00:00",
+  "generated_at": "2026-06-20T22:06:12.564420+00:00",
   "participants": [
     "ivan",
     "raquel",
@@ -1013,10 +1013,10 @@
       "group": "E",
       "home_team": "Germany",
       "away_team": "Ivory Coast",
-      "home_score": 0,
+      "home_score": 2,
       "away_score": 1,
-      "completed": false,
-      "result": null,
+      "completed": true,
+      "result": "home",
       "date_utc": "2026-06-20T20:00Z",
       "venue": "BMO Field",
       "city": "Toronto",

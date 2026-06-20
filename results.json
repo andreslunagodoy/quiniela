@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-20T20:50:39.118074+00:00",
+  "fetched_at": "2026-06-20T22:06:12.498333+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -571,11 +571,11 @@
       "home_abbreviation": "GER",
       "away_team": "Ivory Coast",
       "away_abbreviation": "CIV",
-      "home_score": 0,
+      "home_score": 2,
       "away_score": 1,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "status": "post",
+      "completed": true,
+      "result": "home",
       "venue": "BMO Field",
       "city": "Toronto"
     },
