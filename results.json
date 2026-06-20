@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-19T23:35:47.571282+00:00",
+  "fetched_at": "2026-06-20T03:38:00.866293+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -505,9 +505,9 @@
       "away_abbreviation": "MAR",
       "home_score": 0,
       "away_score": 1,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "status": "post",
+      "completed": true,
+      "result": "away",
       "venue": "Gillette Stadium",
       "city": "Foxborough, Massachusetts"
     },
@@ -520,11 +520,11 @@
       "home_abbreviation": "BRA",
       "away_team": "Haiti",
       "away_abbreviation": "HAI",
-      "home_score": 0,
+      "home_score": 3,
       "away_score": 0,
-      "status": "pre",
-      "completed": false,
-      "result": null,
+      "status": "post",
+      "completed": true,
+      "result": "home",
       "venue": "Lincoln Financial Field",
       "city": "Philadelphia, Pennsylvania"
     },
@@ -538,8 +538,8 @@
       "away_team": "Paraguay",
       "away_abbreviation": "PAR",
       "home_score": 0,
-      "away_score": 0,
-      "status": "pre",
+      "away_score": 1,
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "Levi's Stadium",
