@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-21T20:12:17.342958+00:00",
+  "fetched_at": "2026-06-21T21:54:37.202186+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -641,9 +641,9 @@
       "away_abbreviation": "IRN",
       "home_score": 0,
       "away_score": 0,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "status": "post",
+      "completed": true,
+      "result": "draw",
       "venue": "SoFi Stadium",
       "city": "Inglewood, California"
     },
