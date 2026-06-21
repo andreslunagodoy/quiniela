@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-21T16:15:08.938297+00:00",
+  "fetched_at": "2026-06-21T18:05:26.627182+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -622,11 +622,11 @@
       "home_abbreviation": "ESP",
       "away_team": "Saudi Arabia",
       "away_abbreviation": "KSA",
-      "home_score": 1,
+      "home_score": 4,
       "away_score": 0,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "status": "post",
+      "completed": true,
+      "result": "home",
       "venue": "Mercedes-Benz Stadium",
       "city": "Atlanta, Georgia"
     },

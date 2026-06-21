@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-21T16:15:09.000938+00:00",
+  "generated_at": "2026-06-21T18:05:26.692198+00:00",
   "participants": [
     "ivan",
     "raquel",
@@ -1103,10 +1103,10 @@
       "group": "H",
       "home_team": "Spain",
       "away_team": "Saudi Arabia",
-      "home_score": 1,
+      "home_score": 4,
       "away_score": 0,
-      "completed": false,
-      "result": null,
+      "completed": true,
+      "result": "home",
       "date_utc": "2026-06-21T16:00Z",
       "venue": "Mercedes-Benz Stadium",
       "city": "Atlanta, Georgia",
