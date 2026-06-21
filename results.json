@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-21T14:10:15.988155+00:00",
+  "fetched_at": "2026-06-21T16:15:08.938297+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -622,9 +622,9 @@
       "home_abbreviation": "ESP",
       "away_team": "Saudi Arabia",
       "away_abbreviation": "KSA",
-      "home_score": 0,
+      "home_score": 1,
       "away_score": 0,
-      "status": "pre",
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "Mercedes-Benz Stadium",

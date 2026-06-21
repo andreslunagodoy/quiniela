@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-21T14:10:16.038456+00:00",
+  "generated_at": "2026-06-21T16:15:09.000938+00:00",
   "participants": [
     "ivan",
     "raquel",
@@ -1103,7 +1103,7 @@
       "group": "H",
       "home_team": "Spain",
       "away_team": "Saudi Arabia",
-      "home_score": 0,
+      "home_score": 1,
       "away_score": 0,
       "completed": false,
       "result": null,
