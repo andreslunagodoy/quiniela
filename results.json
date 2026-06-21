@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-21T04:10:41.343961+00:00",
+  "fetched_at": "2026-06-21T08:45:58.542092+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -606,10 +606,10 @@
       "away_team": "Japan",
       "away_abbreviation": "JPN",
       "home_score": 0,
-      "away_score": 1,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "away_score": 4,
+      "status": "post",
+      "completed": true,
+      "result": "away",
       "venue": "Estadio BBVA",
       "city": "Guadalupe"
     },
