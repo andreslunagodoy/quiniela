@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-20T23:45:08.403457+00:00",
+  "generated_at": "2026-06-21T04:10:41.405324+00:00",
   "participants": [
     "ivan",
     "raquel",
@@ -1045,8 +1045,8 @@
       "away_team": "Curaçao",
       "home_score": 0,
       "away_score": 0,
-      "completed": false,
-      "result": null,
+      "completed": true,
+      "result": "draw",
       "date_utc": "2026-06-21T00:00Z",
       "venue": "GEHA Field at Arrowhead Stadium",
       "city": "Kansas City, Missouri",
@@ -1074,7 +1074,7 @@
       "home_team": "Tunisia",
       "away_team": "Japan",
       "home_score": 0,
-      "away_score": 0,
+      "away_score": 1,
       "completed": false,
       "result": null,
       "date_utc": "2026-06-21T04:00Z",
