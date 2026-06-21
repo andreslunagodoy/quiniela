@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-21T21:54:37.259563+00:00",
+  "generated_at": "2026-06-21T23:12:09.872636+00:00",
   "participants": [
     "ivan",
     "raquel",
@@ -1163,8 +1163,8 @@
       "group": "H",
       "home_team": "Uruguay",
       "away_team": "Cape Verde",
-      "home_score": 0,
-      "away_score": 0,
+      "home_score": 2,
+      "away_score": 1,
       "completed": false,
       "result": null,
       "date_utc": "2026-06-21T22:00Z",

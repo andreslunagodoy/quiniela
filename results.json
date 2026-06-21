@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-21T21:54:37.202186+00:00",
+  "fetched_at": "2026-06-21T23:12:09.809799+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -656,9 +656,9 @@
       "home_abbreviation": "URU",
       "away_team": "Cape Verde",
       "away_abbreviation": "CPV",
-      "home_score": 0,
-      "away_score": 0,
-      "status": "pre",
+      "home_score": 2,
+      "away_score": 1,
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "Hard Rock Stadium",
