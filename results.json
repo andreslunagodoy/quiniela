@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-21T23:12:09.809799+00:00",
+  "fetched_at": "2026-06-22T02:02:05.328023+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -657,10 +657,10 @@
       "away_team": "Cape Verde",
       "away_abbreviation": "CPV",
       "home_score": 2,
-      "away_score": 1,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "away_score": 2,
+      "status": "post",
+      "completed": true,
+      "result": "draw",
       "venue": "Hard Rock Stadium",
       "city": "Miami Gardens, Florida"
     },
@@ -673,9 +673,9 @@
       "home_abbreviation": "NZL",
       "away_team": "Egypt",
       "away_abbreviation": "EGY",
-      "home_score": 0,
+      "home_score": 1,
       "away_score": 0,
-      "status": "pre",
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "BC Place",

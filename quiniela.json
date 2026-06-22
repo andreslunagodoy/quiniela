@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-21T23:12:09.872636+00:00",
+  "generated_at": "2026-06-22T02:02:05.389114+00:00",
   "participants": [
     "ivan",
     "raquel",
@@ -1164,9 +1164,9 @@
       "home_team": "Uruguay",
       "away_team": "Cape Verde",
       "home_score": 2,
-      "away_score": 1,
-      "completed": false,
-      "result": null,
+      "away_score": 2,
+      "completed": true,
+      "result": "draw",
       "date_utc": "2026-06-21T22:00Z",
       "venue": "Hard Rock Stadium",
       "city": "Miami Gardens, Florida",
@@ -1193,7 +1193,7 @@
       "group": "G",
       "home_team": "New Zealand",
       "away_team": "Egypt",
-      "home_score": 0,
+      "home_score": 1,
       "away_score": 0,
       "completed": false,
       "result": null,
