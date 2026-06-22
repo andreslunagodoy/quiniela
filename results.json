@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-22T14:39:48.084974+00:00",
+  "fetched_at": "2026-06-22T18:46:14.121265+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -690,9 +690,9 @@
       "home_abbreviation": "ARG",
       "away_team": "Austria",
       "away_abbreviation": "AUT",
-      "home_score": 0,
+      "home_score": 1,
       "away_score": 0,
-      "status": "pre",
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "AT&T Stadium",
