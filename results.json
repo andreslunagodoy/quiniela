@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-22T18:46:14.121265+00:00",
+  "fetched_at": "2026-06-22T21:31:29.266482+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -690,11 +690,11 @@
       "home_abbreviation": "ARG",
       "away_team": "Austria",
       "away_abbreviation": "AUT",
-      "home_score": 1,
+      "home_score": 2,
       "away_score": 0,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "status": "post",
+      "completed": true,
+      "result": "home",
       "venue": "AT&T Stadium",
       "city": "Arlington, Texas"
     },
@@ -707,9 +707,9 @@
       "home_abbreviation": "FRA",
       "away_team": "Iraq",
       "away_abbreviation": "IRQ",
-      "home_score": 0,
+      "home_score": 1,
       "away_score": 0,
-      "status": "pre",
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "Lincoln Financial Field",
