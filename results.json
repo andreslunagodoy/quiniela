@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-23T18:19:58.477876+00:00",
+  "fetched_at": "2026-06-23T20:32:46.210160+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -758,11 +758,11 @@
       "home_abbreviation": "POR",
       "away_team": "Uzbekistan",
       "away_abbreviation": "UZB",
-      "home_score": 3,
+      "home_score": 5,
       "away_score": 0,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "status": "post",
+      "completed": true,
+      "result": "home",
       "venue": "NRG Stadium",
       "city": "Houston, Texas"
     },
@@ -777,7 +777,7 @@
       "away_abbreviation": "GHA",
       "home_score": 0,
       "away_score": 0,
-      "status": "pre",
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "Gillette Stadium",
