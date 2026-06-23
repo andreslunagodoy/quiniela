@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-23T20:32:46.279052+00:00",
+  "generated_at": "2026-06-23T22:12:52.875546+00:00",
   "participants": [
     "ivan",
     "raquel",
@@ -1375,8 +1375,8 @@
       "away_team": "Ghana",
       "home_score": 0,
       "away_score": 0,
-      "completed": false,
-      "result": null,
+      "completed": true,
+      "result": "draw",
       "date_utc": "2026-06-23T20:00Z",
       "venue": "Gillette Stadium",
       "city": "Foxborough, Massachusetts",
