@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-23T01:30:19.939961+00:00",
+  "fetched_at": "2026-06-23T06:06:52.983495+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -725,10 +725,10 @@
       "away_team": "Senegal",
       "away_abbreviation": "SEN",
       "home_score": 3,
-      "away_score": 1,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "away_score": 2,
+      "status": "post",
+      "completed": true,
+      "result": "home",
       "venue": "MetLife Stadium",
       "city": "East Rutherford, New Jersey"
     },
@@ -741,11 +741,11 @@
       "home_abbreviation": "JOR",
       "away_team": "Algeria",
       "away_abbreviation": "ALG",
-      "home_score": 0,
-      "away_score": 0,
-      "status": "pre",
-      "completed": false,
-      "result": null,
+      "home_score": 1,
+      "away_score": 2,
+      "status": "post",
+      "completed": true,
+      "result": "away",
       "venue": "Levi's Stadium",
       "city": "Santa Clara, California"
     },
