@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-22T23:19:31.686669+00:00",
+  "fetched_at": "2026-06-23T01:30:19.939961+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -707,11 +707,11 @@
       "home_abbreviation": "FRA",
       "away_team": "Iraq",
       "away_abbreviation": "IRQ",
-      "home_score": 1,
+      "home_score": 3,
       "away_score": 0,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "status": "post",
+      "completed": true,
+      "result": "home",
       "venue": "Lincoln Financial Field",
       "city": "Philadelphia, Pennsylvania"
     },
@@ -724,9 +724,9 @@
       "home_abbreviation": "NOR",
       "away_team": "Senegal",
       "away_abbreviation": "SEN",
-      "home_score": 0,
-      "away_score": 0,
-      "status": "pre",
+      "home_score": 3,
+      "away_score": 1,
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "MetLife Stadium",
