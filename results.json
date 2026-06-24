@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-24T19:45:09.083797+00:00",
+  "fetched_at": "2026-06-24T21:22:08.106510+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -826,11 +826,11 @@
       "home_abbreviation": "BIH",
       "away_team": "Qatar",
       "away_abbreviation": "QAT",
-      "home_score": 2,
+      "home_score": 3,
       "away_score": 1,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "status": "post",
+      "completed": true,
+      "result": "home",
       "venue": "Lumen Field",
       "city": "Seattle, Washington"
     },
@@ -843,11 +843,11 @@
       "home_abbreviation": "SUI",
       "away_team": "Canada",
       "away_abbreviation": "CAN",
-      "home_score": 0,
-      "away_score": 0,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "home_score": 2,
+      "away_score": 1,
+      "status": "post",
+      "completed": true,
+      "result": "home",
       "venue": "BC Place",
       "city": "Vancouver"
     },
