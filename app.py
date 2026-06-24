@@ -447,104 +447,105 @@ with tab_live:
             )
             live_resolved.append({**live, "hyp_winner": hyp_winner, "match_data": match_data})
 
-        # Score banners + per-game prediction tables
-        for lr in live_resolved:
+        # One column per game + one column for combined standings
+        cols = st.columns(len(live_resolved) + 1)
+
+        for col, lr in zip(cols, live_resolved):
             home, away = lr["home_team"], lr["away_team"]
             hs, as_ = lr["home_score"], lr["away_score"]
-            hyp_winner = lr["hyp_winner"]
-            match_data = lr["match_data"]
+            hyp_winner, match_data = lr["hyp_winner"], lr["match_data"]
+            with col:
+                st.markdown(f"""
+                <div style='text-align:center;padding:8px 0 12px;'>
+                  <div style='font-size:0.85em;color:#888;margin-bottom:4px'>
+                    {lr["clock"]} &nbsp;·&nbsp; {lr["period"]}
+                  </div>
+                  <div style='font-size:1.4em;font-weight:800;line-height:1.3'>
+                    {team_display(home)}<br>{hs} – {as_}<br>{team_display(away)}
+                  </div>
+                </div>
+                """, unsafe_allow_html=True)
 
-            st.markdown(f"""
-            <div style='text-align:center;padding:20px 0 16px;'>
-              <div style='font-size:0.95em;color:#888;margin-bottom:6px'>
-                {lr["clock"]} &nbsp;·&nbsp; {lr["period"]}
-              </div>
-              <div style='font-size:2.2em;font-weight:800;'>
-                {team_display(home)} &nbsp;&nbsp; {hs} – {as_} &nbsp;&nbsp; {team_display(away)}
-              </div>
-            </div>
-            """, unsafe_allow_html=True)
+                if match_data:
+                    st.subheader("Predicciones")
+                    pred_rows, correct_flags, has_pred = [], [], []
+                    for p in participants:
+                        pred = match_data["predictions"].get(p)
+                        if pred == home:     plabel = team_display(home)
+                        elif pred == away:   plabel = team_display(away)
+                        elif pred == "draw": plabel = "Empate"
+                        else:                plabel = "—"
+                        correct_flags.append(pred == hyp_winner if pred is not None else False)
+                        has_pred.append(pred is not None)
+                        pred_rows.append({"Participante": participant_col(p), "Predicción": plabel})
 
-            if match_data:
-                st.subheader("Predicciones")
-                pred_rows, correct_flags, has_pred = [], [], []
-                for p in participants:
-                    pred = match_data["predictions"].get(p)
-                    if pred == home:     plabel = team_display(home)
-                    elif pred == away:   plabel = team_display(away)
-                    elif pred == "draw": plabel = "Empate"
-                    else:                plabel = "—"
-                    correct_flags.append(pred == hyp_winner if pred is not None else False)
-                    has_pred.append(pred is not None)
-                    pred_rows.append({"Participante": participant_col(p), "Predicción": plabel})
+                    df_lp = pd.DataFrame(pred_rows)
 
-                df_lp = pd.DataFrame(pred_rows)
+                    def _style_lp(df):
+                        out = pd.DataFrame("", index=df.index, columns=df.columns)
+                        for i in df.index:
+                            if has_pred[i]:
+                                out.loc[i] = COLORS["correct"] if correct_flags[i] else COLORS["wrong"]
+                        return out
 
-                def _style_lp(df):
-                    out = pd.DataFrame("", index=df.index, columns=df.columns)
-                    for i in df.index:
-                        if has_pred[i]:
-                            out.loc[i] = COLORS["correct"] if correct_flags[i] else COLORS["wrong"]
-                    return out
+                    st.dataframe(df_lp.style.apply(_style_lp, axis=None),
+                                 hide_index=True, use_container_width=True,
+                                 height=35*(len(participants)+1)+3)
 
-                st.dataframe(df_lp.style.apply(_style_lp, axis=None),
-                             hide_index=True, use_container_width=False,
-                             height=35*(len(participants)+1)+3)
+        # Last column: combined hypothetical standings
+        with cols[-1]:
+            title = "Tabla si así termina" if len(live_resolved) == 1 else "Tabla si así terminan todos"
+            st.subheader(title)
 
-            st.divider()
+            curr_pts = {p: sum(1 for m in completed if m["predictions"].get(p) == get_winner(m))
+                        for p in participants}
+            curr_sorted = sorted(participants, key=lambda p: -curr_pts[p])
+            curr_rank, _r = {}, 1
+            for _i, _p in enumerate(curr_sorted):
+                if _i > 0 and curr_pts[_p] < curr_pts[curr_sorted[_i-1]]:
+                    _r = _i + 1
+                curr_rank[_p] = _r
 
-        # Combined hypothetical standings (all live games at once)
-        st.subheader("Tabla si así terminan todos")
+            hyp_rows = []
+            for p in participants:
+                pts = curr_pts[p]
+                for lr in live_resolved:
+                    md = lr["match_data"]
+                    if md and md["predictions"].get(p) == lr["hyp_winner"]:
+                        pts += 1
+                hyp_rows.append({"name": p, "points": pts})
+            hyp_rows.sort(key=lambda x: -x["points"])
+            _r = 1
+            for _i, _row in enumerate(hyp_rows):
+                if _i > 0 and _row["points"] < hyp_rows[_i-1]["points"]:
+                    _r = _i + 1
+                _row["rank"] = _r
 
-        curr_pts = {p: sum(1 for m in completed if m["predictions"].get(p) == get_winner(m))
-                    for p in participants}
-        curr_sorted = sorted(participants, key=lambda p: -curr_pts[p])
-        curr_rank, _r = {}, 1
-        for _i, _p in enumerate(curr_sorted):
-            if _i > 0 and curr_pts[_p] < curr_pts[curr_sorted[_i-1]]:
-                _r = _i + 1
-            curr_rank[_p] = _r
+            delta_styles, df_hyp_rows = [], []
+            for _row in hyp_rows:
+                d = curr_rank[_row["name"]] - _row["rank"]
+                if d > 0:   ds, dc = f"↑{d}", "color:#155724;font-weight:600"
+                elif d < 0: ds, dc = f"↓{abs(d)}", "color:#721c24;font-weight:600"
+                else:       ds, dc = "—", ""
+                delta_styles.append(dc)
+                df_hyp_rows.append({
+                    "Pos.": MEDALS.get(_row["rank"], str(_row["rank"])),
+                    "Participante": participant_col(_row["name"]),
+                    "Pts.": _row["points"],
+                    "Δ": ds,
+                })
 
-        hyp_rows = []
-        for p in participants:
-            pts = curr_pts[p]
-            for lr in live_resolved:
-                md = lr["match_data"]
-                if md and md["predictions"].get(p) == lr["hyp_winner"]:
-                    pts += 1
-            hyp_rows.append({"name": p, "points": pts})
-        hyp_rows.sort(key=lambda x: -x["points"])
-        _r = 1
-        for _i, _row in enumerate(hyp_rows):
-            if _i > 0 and _row["points"] < hyp_rows[_i-1]["points"]:
-                _r = _i + 1
-            _row["rank"] = _r
+            df_hyp = pd.DataFrame(df_hyp_rows)
 
-        delta_styles, df_hyp_rows = [], []
-        for _row in hyp_rows:
-            d = curr_rank[_row["name"]] - _row["rank"]
-            if d > 0:   ds, dc = f"↑{d}", "color:#155724;font-weight:600"
-            elif d < 0: ds, dc = f"↓{abs(d)}", "color:#721c24;font-weight:600"
-            else:       ds, dc = "—", ""
-            delta_styles.append(dc)
-            df_hyp_rows.append({
-                "Pos.": MEDALS.get(_row["rank"], str(_row["rank"])),
-                "Participante": participant_col(_row["name"]),
-                "Pts.": _row["points"],
-                "Δ": ds,
-            })
+            def _style_hyp(df):
+                out = pd.DataFrame("", index=df.index, columns=df.columns)
+                for i in df.index:
+                    out.loc[i, "Δ"] = delta_styles[i]
+                return out
 
-        df_hyp = pd.DataFrame(df_hyp_rows)
-
-        def _style_hyp(df):
-            out = pd.DataFrame("", index=df.index, columns=df.columns)
-            for i in df.index:
-                out.loc[i, "Δ"] = delta_styles[i]
-            return out
-
-        st.dataframe(df_hyp.style.apply(_style_hyp, axis=None),
-                     hide_index=True, use_container_width=False,
-                     height=35*(len(hyp_rows)+1)+3)
+            st.dataframe(df_hyp.style.apply(_style_hyp, axis=None),
+                         hide_index=True, use_container_width=True,
+                         height=35*(len(hyp_rows)+1)+3)
 
 # ── Tab 3: Predicciones ───────────────────────────────────────────────────────
 
