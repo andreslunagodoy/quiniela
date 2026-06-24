@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-23T23:35:16.703623+00:00",
+  "generated_at": "2026-06-24T03:33:19.268635+00:00",
   "participants": [
     "ivan",
     "raquel",
@@ -1404,9 +1404,9 @@
       "home_team": "Panama",
       "away_team": "Croatia",
       "home_score": 0,
-      "away_score": 0,
-      "completed": false,
-      "result": null,
+      "away_score": 1,
+      "completed": true,
+      "result": "away",
       "date_utc": "2026-06-23T23:00Z",
       "venue": "BMO Field",
       "city": "Toronto",

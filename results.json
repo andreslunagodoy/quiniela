@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-23T23:35:16.655511+00:00",
+  "fetched_at": "2026-06-24T03:33:19.182240+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -793,10 +793,10 @@
       "away_team": "Croatia",
       "away_abbreviation": "CRO",
       "home_score": 0,
-      "away_score": 0,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "away_score": 1,
+      "status": "post",
+      "completed": true,
+      "result": "away",
       "venue": "BMO Field",
       "city": "Toronto"
     },
@@ -811,7 +811,7 @@
       "away_abbreviation": "COD",
       "home_score": 0,
       "away_score": 0,
-      "status": "pre",
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "Estadio Akron",
