@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-24T17:53:56.315702+00:00",
+  "fetched_at": "2026-06-24T19:45:09.083797+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -826,9 +826,9 @@
       "home_abbreviation": "BIH",
       "away_team": "Qatar",
       "away_abbreviation": "QAT",
-      "home_score": 0,
-      "away_score": 0,
-      "status": "pre",
+      "home_score": 2,
+      "away_score": 1,
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "Lumen Field",
@@ -845,7 +845,7 @@
       "away_abbreviation": "CAN",
       "home_score": 0,
       "away_score": 0,
-      "status": "pre",
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "BC Place",

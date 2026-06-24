@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-24T17:53:56.380202+00:00",
+  "generated_at": "2026-06-24T19:45:09.161109+00:00",
   "participants": [
     "ivan",
     "raquel",
@@ -1463,8 +1463,8 @@
       "group": "B",
       "home_team": "Bosnia-Herzegovina",
       "away_team": "Qatar",
-      "home_score": 0,
-      "away_score": 0,
+      "home_score": 2,
+      "away_score": 1,
       "completed": false,
       "result": null,
       "date_utc": "2026-06-24T19:00Z",
