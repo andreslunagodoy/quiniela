@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-24T03:33:19.182240+00:00",
+  "fetched_at": "2026-06-24T07:40:29.497447+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -809,11 +809,11 @@
       "home_abbreviation": "COL",
       "away_team": "Congo DR",
       "away_abbreviation": "COD",
-      "home_score": 0,
+      "home_score": 1,
       "away_score": 0,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "status": "post",
+      "completed": true,
+      "result": "home",
       "venue": "Estadio Akron",
       "city": "Guadalajara"
     },

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-24T03:33:19.268635+00:00",
+  "generated_at": "2026-06-24T07:40:29.569055+00:00",
   "participants": [
     "ivan",
     "raquel",
@@ -1433,10 +1433,10 @@
       "group": "K",
       "home_team": "Colombia",
       "away_team": "Congo DR",
-      "home_score": 0,
+      "home_score": 1,
       "away_score": 0,
-      "completed": false,
-      "result": null,
+      "completed": true,
+      "result": "home",
       "date_utc": "2026-06-24T02:00Z",
       "venue": "Estadio Akron",
       "city": "Guadalajara",
