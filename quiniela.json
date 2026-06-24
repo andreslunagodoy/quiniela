@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-24T21:22:08.169073+00:00",
+  "generated_at": "2026-06-24T22:47:21.619482+00:00",
   "participants": [
     "ivan",
     "raquel",
@@ -1523,8 +1523,8 @@
       "group": "C",
       "home_team": "Morocco",
       "away_team": "Haiti",
-      "home_score": 0,
-      "away_score": 0,
+      "home_score": 2,
+      "away_score": 2,
       "completed": false,
       "result": null,
       "date_utc": "2026-06-24T22:00Z",
@@ -1554,7 +1554,7 @@
       "home_team": "Scotland",
       "away_team": "Brazil",
       "home_score": 0,
-      "away_score": 0,
+      "away_score": 1,
       "completed": false,
       "result": null,
       "date_utc": "2026-06-24T22:00Z",

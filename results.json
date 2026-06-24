@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-24T21:22:08.106510+00:00",
+  "fetched_at": "2026-06-24T22:47:21.552663+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -860,9 +860,9 @@
       "home_abbreviation": "MAR",
       "away_team": "Haiti",
       "away_abbreviation": "HAI",
-      "home_score": 0,
-      "away_score": 0,
-      "status": "pre",
+      "home_score": 2,
+      "away_score": 2,
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "Mercedes-Benz Stadium",
@@ -878,8 +878,8 @@
       "away_team": "Brazil",
       "away_abbreviation": "BRA",
       "home_score": 0,
-      "away_score": 0,
-      "status": "pre",
+      "away_score": 1,
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "Hard Rock Stadium",
