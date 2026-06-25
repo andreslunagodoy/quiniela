@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-25T18:32:51.553943+00:00",
+  "fetched_at": "2026-06-25T20:57:11.401010+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -929,8 +929,8 @@
       "away_team": "Ivory Coast",
       "away_abbreviation": "CIV",
       "home_score": 0,
-      "away_score": 0,
-      "status": "pre",
+      "away_score": 1,
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "Lincoln Financial Field",
@@ -945,9 +945,9 @@
       "home_abbreviation": "ECU",
       "away_team": "Germany",
       "away_abbreviation": "GER",
-      "home_score": 0,
-      "away_score": 0,
-      "status": "pre",
+      "home_score": 1,
+      "away_score": 1,
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "MetLife Stadium",

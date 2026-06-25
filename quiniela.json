@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T18:32:51.625442+00:00",
+  "generated_at": "2026-06-25T20:57:11.457761+00:00",
   "participants": [
     "ivan",
     "raquel",
@@ -1644,7 +1644,7 @@
       "home_team": "Curaçao",
       "away_team": "Ivory Coast",
       "home_score": 0,
-      "away_score": 0,
+      "away_score": 1,
       "completed": false,
       "result": null,
       "date_utc": "2026-06-25T20:00Z",
@@ -1673,8 +1673,8 @@
       "group": "E",
       "home_team": "Ecuador",
       "away_team": "Germany",
-      "home_score": 0,
-      "away_score": 0,
+      "home_score": 1,
+      "away_score": 1,
       "completed": false,
       "result": null,
       "date_utc": "2026-06-25T20:00Z",
