@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T22:23:44.859997+00:00",
+  "generated_at": "2026-06-25T23:52:35.966749+00:00",
   "participants": [
     "ivan",
     "raquel",
@@ -1734,7 +1734,7 @@
       "home_team": "Tunisia",
       "away_team": "Netherlands",
       "home_score": 0,
-      "away_score": 0,
+      "away_score": 2,
       "completed": false,
       "result": null,
       "date_utc": "2026-06-25T23:00Z",

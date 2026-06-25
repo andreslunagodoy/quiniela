@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-25T22:23:44.793319+00:00",
+  "fetched_at": "2026-06-25T23:52:35.900625+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -964,7 +964,7 @@
       "away_abbreviation": "SWE",
       "home_score": 0,
       "away_score": 0,
-      "status": "pre",
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "AT&T Stadium",
@@ -980,8 +980,8 @@
       "away_team": "Netherlands",
       "away_abbreviation": "NED",
       "home_score": 0,
-      "away_score": 0,
-      "status": "pre",
+      "away_score": 2,
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "GEHA Field at Arrowhead Stadium",
