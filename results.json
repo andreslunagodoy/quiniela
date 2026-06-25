@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-25T00:12:53.999556+00:00",
+  "fetched_at": "2026-06-25T04:45:20.370724+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -895,10 +895,10 @@
       "away_team": "Mexico",
       "away_abbreviation": "MEX",
       "home_score": 0,
-      "away_score": 0,
-      "status": "pre",
-      "completed": false,
-      "result": null,
+      "away_score": 3,
+      "status": "post",
+      "completed": true,
+      "result": "away",
       "venue": "Estadio Banorte",
       "city": "Mexico City"
     },
@@ -911,11 +911,11 @@
       "home_abbreviation": "RSA",
       "away_team": "South Korea",
       "away_abbreviation": "KOR",
-      "home_score": 0,
+      "home_score": 1,
       "away_score": 0,
-      "status": "pre",
-      "completed": false,
-      "result": null,
+      "status": "post",
+      "completed": true,
+      "result": "home",
       "venue": "Estadio BBVA",
       "city": "Guadalupe"
     },
