@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-26T03:38:48.254007+00:00",
+  "fetched_at": "2026-06-26T07:52:23.165448+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -998,9 +998,9 @@
       "away_abbreviation": "AUS",
       "home_score": 0,
       "away_score": 0,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "status": "post",
+      "completed": true,
+      "result": "draw",
       "venue": "Levi's Stadium",
       "city": "Santa Clara, California"
     },
@@ -1013,11 +1013,11 @@
       "home_abbreviation": "TUR",
       "away_team": "United States",
       "away_abbreviation": "USA",
-      "home_score": 2,
+      "home_score": 3,
       "away_score": 2,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "status": "post",
+      "completed": true,
+      "result": "home",
       "venue": "SoFi Stadium",
       "city": "Inglewood, California"
     },
