@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-26T19:47:03.823779+00:00",
+  "fetched_at": "2026-06-26T21:18:11.382778+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -1031,10 +1031,10 @@
       "away_team": "France",
       "away_abbreviation": "FRA",
       "home_score": 1,
-      "away_score": 3,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "away_score": 4,
+      "status": "post",
+      "completed": true,
+      "result": "away",
       "venue": "Gillette Stadium",
       "city": "Foxborough, Massachusetts"
     },
@@ -1047,11 +1047,11 @@
       "home_abbreviation": "SEN",
       "away_team": "Iraq",
       "away_abbreviation": "IRQ",
-      "home_score": 1,
+      "home_score": 5,
       "away_score": 0,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "status": "post",
+      "completed": true,
+      "result": "home",
       "venue": "BMO Field",
       "city": "Toronto"
     },
