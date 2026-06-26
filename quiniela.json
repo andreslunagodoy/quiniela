@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-26T17:47:28.322163+00:00",
+  "generated_at": "2026-06-26T19:47:03.894619+00:00",
   "participants": [
     "ivan",
     "raquel",
@@ -1823,8 +1823,8 @@
       "group": "I",
       "home_team": "Norway",
       "away_team": "France",
-      "home_score": 0,
-      "away_score": 0,
+      "home_score": 1,
+      "away_score": 3,
       "completed": false,
       "result": null,
       "date_utc": "2026-06-26T19:00Z",
@@ -1853,7 +1853,7 @@
       "group": "I",
       "home_team": "Senegal",
       "away_team": "Iraq",
-      "home_score": 0,
+      "home_score": 1,
       "away_score": 0,
       "completed": false,
       "result": null,

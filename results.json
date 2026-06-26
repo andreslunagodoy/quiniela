@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-26T17:47:28.257730+00:00",
+  "fetched_at": "2026-06-26T19:47:03.823779+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -1030,9 +1030,9 @@
       "home_abbreviation": "NOR",
       "away_team": "France",
       "away_abbreviation": "FRA",
-      "home_score": 0,
-      "away_score": 0,
-      "status": "pre",
+      "home_score": 1,
+      "away_score": 3,
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "Gillette Stadium",
@@ -1047,9 +1047,9 @@
       "home_abbreviation": "SEN",
       "away_team": "Iraq",
       "away_abbreviation": "IRQ",
-      "home_score": 0,
+      "home_score": 1,
       "away_score": 0,
-      "status": "pre",
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "BMO Field",
