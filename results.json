@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-27T04:34:29.264518+00:00",
+  "fetched_at": "2026-06-27T07:48:56.581465+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -1100,9 +1100,9 @@
       "away_abbreviation": "IRN",
       "home_score": 1,
       "away_score": 1,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "status": "post",
+      "completed": true,
+      "result": "draw",
       "venue": "Lumen Field",
       "city": "Seattle, Washington"
     },
@@ -1115,11 +1115,11 @@
       "home_abbreviation": "NZL",
       "away_team": "Belgium",
       "away_abbreviation": "BEL",
-      "home_score": 0,
-      "away_score": 3,
-      "status": "in",
-      "completed": false,
-      "result": null,
+      "home_score": 1,
+      "away_score": 5,
+      "status": "post",
+      "completed": true,
+      "result": "away",
       "venue": "BC Place",
       "city": "Vancouver"
     },
