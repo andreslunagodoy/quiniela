@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-27T19:52:52.238538+00:00",
+  "fetched_at": "2026-06-27T21:03:25.758196+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -1134,7 +1134,7 @@
       "away_abbreviation": "GHA",
       "home_score": 0,
       "away_score": 0,
-      "status": "pre",
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "Lincoln Financial Field",
@@ -1151,7 +1151,7 @@
       "away_abbreviation": "ENG",
       "home_score": 0,
       "away_score": 0,
-      "status": "pre",
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "MetLife Stadium",
