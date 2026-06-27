@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-26T22:45:00.862161+00:00",
+  "fetched_at": "2026-06-27T00:06:19.173929+00:00",
   "matches": [
     {
       "match_number": 1,
@@ -1066,7 +1066,7 @@
       "away_abbreviation": "KSA",
       "home_score": 0,
       "away_score": 0,
-      "status": "pre",
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "NRG Stadium",
@@ -1083,7 +1083,7 @@
       "away_abbreviation": "ESP",
       "home_score": 0,
       "away_score": 0,
-      "status": "pre",
+      "status": "in",
       "completed": false,
       "result": null,
       "venue": "Estadio Akron",
