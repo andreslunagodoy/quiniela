@@ -19,9 +19,9 @@ A Streamlit web app where 14 family members each predicted the winner of every g
 - `Quiniela 2026.xlsx - Hoja1.csv` — original predictions spreadsheet (source of truth for picks)
 - `scrape_results.py` — fetches match results from the ESPN public API → `results.json`
 - `parse_predictions.py` — merges predictions CSV with ESPN results → `quiniela.json`
-- `app.py` — reads `quiniela.json` and overlays fresh ESPN data on every page load
+- `app.py` — reads `quiniela.json` directly (all group-stage matches are final, so no live overlay is needed anymore)
 
-Results are also updated automatically every 30 minutes via a GitHub Actions workflow.
+The group stage concluded in June 2026 and results are final, so the results-update workflow (`.github/workflows/update-results.yml`) is no longer scheduled — it's kept around as a manual (`workflow_dispatch`) tool in case results ever need reprocessing. The **🔴 En vivo** tab is likewise inert now, since there are no more live matches; it's kept in case the app is reused for a future tournament.
 
 ## Running locally
 

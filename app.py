@@ -119,44 +119,6 @@ ESPN_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scor
 _ESPN_HEADERS = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/120 Safari/537.36"}
 
 @st.cache_data(ttl=60)
-def _espn_events():
-    r = requests.get(ESPN_URL, params={"dates": "20260611-20260726", "limit": 200},
-                     headers=_ESPN_HEADERS, timeout=10)
-    r.raise_for_status()
-    return r.json().get("events", [])
-
-def _parse_espn_events(events):
-    index, abbrevs = {}, {}
-    for event in events:
-        comp = event["competitions"][0]
-        status = comp["status"]["type"]
-        competitors = {c["homeAway"]: c for c in comp.get("competitors", [])}
-        home = competitors.get("home", {})
-        away = competitors.get("away", {})
-        home_name = home.get("team", {}).get("displayName")
-        away_name = away.get("team", {}).get("displayName")
-        if not home_name or not away_name:
-            continue
-        home_score = int(home["score"]) if home.get("score") not in (None, "") else None
-        away_score = int(away["score"]) if away.get("score") not in (None, "") else None
-        completed = status.get("completed", False)
-        if completed and home_score is not None and away_score is not None:
-            result = "home" if home_score > away_score else ("away" if away_score > home_score else "draw")
-        else:
-            result = None
-        key = frozenset({home_name, away_name})
-        index[key] = {
-            "home_score": home_score, "away_score": away_score,
-            "completed": completed, "result": result,
-            "date_utc": event["date"],
-            "venue": comp.get("venue", {}).get("fullName"),
-            "city": comp.get("venue", {}).get("address", {}).get("city"),
-        }
-        abbrevs[home_name] = home.get("team", {}).get("abbreviation", "")
-        abbrevs[away_name] = away.get("team", {}).get("abbreviation", "")
-    return index, abbrevs
-
-@st.cache_data(ttl=60)
 def _espn_live():
     r = requests.get(ESPN_URL, headers=_ESPN_HEADERS, timeout=10)
     r.raise_for_status()
@@ -190,33 +152,13 @@ def get_live_games():
 
 def load_quiniela():
     with open("quiniela.json", encoding="utf-8") as f:
-        data = json.load(f)
-    espn_error = None
-    try:
-        espn_index, _ = _parse_espn_events(_espn_events())
-        for m in data["matches"]:
-            live = espn_index.get(frozenset({m["home_team"], m["away_team"]}))
-            if live:
-                m.update({k: v for k, v in live.items() if v is not None})
-    except Exception as e:
-        espn_error = str(e)
-    data["_espn_error"] = espn_error
-    return data
+        return json.load(f)
 
 def load_abbrevs():
-    try:
-        _, abbrevs = _parse_espn_events(_espn_events())
-        if abbrevs:
-            return abbrevs
-    except Exception:
-        pass
-    try:
-        with open("results.json", encoding="utf-8") as f:
-            results = json.load(f)
-        return {m["home_team"]: m["home_abbreviation"] for m in results["matches"]} | \
-               {m["away_team"]: m["away_abbreviation"] for m in results["matches"]}
-    except Exception:
-        return {}
+    with open("results.json", encoding="utf-8") as f:
+        results = json.load(f)
+    return {m["home_team"]: m["home_abbreviation"] for m in results["matches"]} | \
+           {m["away_team"]: m["away_abbreviation"] for m in results["matches"]}
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
