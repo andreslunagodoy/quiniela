@@ -5,19 +5,32 @@ Outputs results.json with one entry per match.
 
 import json
 import requests
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 ESPN_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard"
 
+GROUP_STAGE_START = datetime(2026, 6, 11)
+GROUP_STAGE_END = datetime(2026, 6, 27)
+
 
 def fetch_matches():
-    r = requests.get(
-        ESPN_URL,
-        params={"dates": "20260611-20260627", "limit": 200},
-        timeout=15,
-    )
-    r.raise_for_status()
-    return r.json().get("events", [])
+    # ESPN's API stopped accepting hyphenated date ranges (e.g. "20260611-20260627")
+    # around 2026-09-16, returning 400 Bad Request. Fetch one day at a time instead
+    # and dedupe by event id, since a single day's response can include matches that
+    # land on the next UTC date (late kickoffs).
+    seen = {}
+    day = GROUP_STAGE_START
+    while day <= GROUP_STAGE_END:
+        r = requests.get(
+            ESPN_URL,
+            params={"dates": day.strftime("%Y%m%d"), "limit": 200},
+            timeout=15,
+        )
+        r.raise_for_status()
+        for event in r.json().get("events", []):
+            seen[event["id"]] = event
+        day += timedelta(days=1)
+    return sorted(seen.values(), key=lambda e: e["date"])
 
 
 def parse_group(event):
